@@ -1,0 +1,205 @@
+﻿body {
+    margin: 0;
+    font-size: 100%;
+    line-height: normal;
+    color: #373737;
+    background-color: #797979;
+}
+
+.main {
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 20px !important;
+    width: 100%;
+    max-width: 805px;
+}
+
+.main__title {
+    margin-bottom: 25px;
+    font-family: inherit;
+    font-weight: normal;
+    font-size: 36px;
+    color: #A9A9A9;
+    text-align: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 830px;
+}
+
+.container form {
+    padding: 10px 5px 25px 20px;
+    border: 1px solid #DCDCDC;
+    border-radius: 5px;
+}
+
+.container > form > legend {
+    font-size: 21px;
+    color: #A9A9A9;
+}
+
+.control-group {
+    display: block;
+    font-family: inherit;
+    font-weight: normal;
+    color: #594540 !important;
+}
+
+#control-group__add-foto {
+    margin-top: 20px;
+    margin-right: 41px;
+    float: left;
+}
+
+#control-group__add-foto label:nth-child(1) {
+    font-size: 12px;
+}
+
+#control-group__add-submit {
+    margin-top: 0;
+    margin-right: 2px;
+}
+
+.link {
+    display: none;
+}
+
+.link_download {
+    margin-top: 25px;
+}
+
+.link_download > p:nth-child(2) {
+    margin-top: -4px !important;
+}
+
+#download, #download_compr,
+    #download_zip {
+        width: 17vw;
+}
+
+.link_download > p:nth-child(3) {
+    margin-top: 30px !important;
+}
+
+.update__link {
+    float: right;
+    opacity: 0;
+}
+
+.update__link_page {
+    margin-top: 25px;
+}
+
+/** Styling input[type=file] **/
+.btn-file {
+    position: relative;
+    margin-right: 4px;
+    overflow: hidden;
+}
+
+.btn-file input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    transform: translate(-300px, 0) scale(4);
+    font-size: 23px;
+    direction: ltr;
+    cursor: pointer;
+}
+
+/* Fix for IE 7: */
+* + html .btn-file {
+    margin: 1px 0 0 0;
+    padding: 2px 15px;
+}
+
+.control-label {
+    color: #594540 !important;
+}
+
+.type_file {
+    position: relative;
+    height: 26px;
+}
+
+.inputFile {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    opacity: 0;
+    width: 267px;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    cursor: pointer;
+}
+
+.fonTypeFile {
+    width: 400px;
+    height: 26px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    cursor: pointer;
+}
+.inputFileVal {
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    z-index: 2;
+    width: 100%;
+    max-width: 250px;
+    background: none;
+    border: none;
+    color: #000000 !important;
+    width: 400px !important;
+}
+
+.modal-header h5 + b {
+    color: red;
+}
+
+.popup__cnt {
+    display: inline-block;
+    width: 270px;
+    height: 144px;
+    margin-left: 10px;
+    font-size: 12px;
+    font-family: inherit;
+    color: #594540;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: #fff;
+    -webkit-border-radius: 5px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 5px;
+    -moz-background-clip: padding;
+    border-radius: 5px;
+    background-clip: padding-box;
+    margin-right: 18px;
+    margin-bottom: 20px;
+    padding: 20px;
+    cursor: pointer;
+    overflow: hidden;
+    border: 1px solid #EFCB00; border-radius: 5px;
+}
+
+.popup__cnt img {
+    margin-right: 10px;
+    width: 65px;
+    border-radius: 100px;
+}
+
+.modal-title {
+    font-family: inherit;
+    font-weight: normal;
+    font-size: 20px;
+    color: #594540 !important;
+}
