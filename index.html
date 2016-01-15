@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Форма загрузки файлов</title>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+    <!--Bootstrap3-->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div id="main" class="main">
+
+      <h1 class="main__title">Форма загрузки файлов</h1>
+
+        <div class="container">
+
+            <form id="upload" name="upload" action="" method="POST" enctype="multipart/form-data">
+                <!-- Form Name -->
+                <legend>Загрузить на сервер текстовый файл (.txt)</legend>
+
+                <!-- File Button -->
+                <div class="control-group" id="control-group__add-foto">
+                    <div class="controls clearfix">
+                        <span class="btn btn-warning btn-file">
+                            <i class="ico-moon-plus"> </i><span>Выберите файл...</span>
+                            <input type="file" id="files" name="files" onchange='document.getElementById("fileName").value=this.value' />
+                        </span>
+                    </div>
+                    <div class="type_file">
+                        <input class="inputFileVal" readonly="readonly" id="fileName" name="fileName" type="text" />
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="control-group" id="control-group__add-submit">
+                    <label class="control-label" for="add-submit"></label>
+                    <div class="controls">
+                        <button id="add_submit" name="add_submit" class="btn btn-primary">Загрузить</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="link link_download">
+                <p><a id="download" class="btn btn-success" href="" target="blank" download="">Скачать не упакованный txt-файл</a></p>
+                <p><a id="download_compr" class="btn btn-success" href="" target="blank" download="">Скачать упакованный txt-файл</a></p>
+
+                <p><a id="download_zip" class="btn btn-default" href="">Скачать zip-архив (2 файла)</a></p>
+            </div>
+
+            <p class="update__link update__link_page">
+                <span id="reload" class="btn btn-default">Обновить страницу</span>
+            </p>
+
+        </div>
+      </div>
+      <script src="http://code.jquery.com/jquery-latest.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+      <script src="js/add_file.js"></script>
+</body>
+</html>
