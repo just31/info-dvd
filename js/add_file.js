@@ -18,7 +18,7 @@ function validateType(fileInput, type) {
 
 // При произведении выбора, определяем тип файла. С помощью функции 'validateType'.
 $('#files').change(function () {
-    // После выбора файла, меняем текст на кнопке,
+    // После выбора файла, меняем текст на кнопке.
     add_submit.innerHTML = 'Загрузить файл';
     // Если тип не верен:
     if(!validateType(this, 1)) {
