@@ -18,8 +18,6 @@ function validateType(fileInput, type) {
 
 // При произведении выбора, определяем тип файла. С помощью функции 'validateType'.
 $('#files').change(function () {
-    // После выбора файла, меняем текст на кнопке.
-    add_submit.innerHTML = 'Загрузить файл';
     // Если тип не верен:
     if(!validateType(this, 1)) {
         // Очищаем, под кнопкой, поле с названием файла.
@@ -29,6 +27,9 @@ $('#files').change(function () {
         '<h5 class="modal-title">Выбран неверный тип файла. Можно загружать только файлы .txt</h5></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">' +
         'Закрыть</button></div></div></div></div>');
         $("#myModalBox_senderr").modal('show');
+    } else {
+        // После выбора файла, меняем текст на кнопке.
+        add_submit.innerHTML = 'Загрузить файл';
     }
 });
 
