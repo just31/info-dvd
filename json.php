@@ -13,12 +13,17 @@ if(isset($_FILES['files'])) {
     $myfile_type = $_FILES["files"]["type"];
 }
 
-// Генерируем имена файлов, для упакованного и не упакованного вариантов файла. Также для архива.
+// Генерируем путь к файлам, для упакованного и не упакованного вариантов. Также для архива.
 $newname = "upload_file/" . date("Y-m-d") . "_" . rand(0, 10000) . ".txt";
 $newname_compr = "upload_file/" . date("Y-m-d") . "_" . rand(0, 10000) . ".txt";
 $newname_zip = "upload_zip/" . date("Y-m-d") . "_" . rand(0, 10000) . ".zip";
 
-if(!empty($myfile)) {
+// Если получили zip-архив от формы:
+// генерируем путь для распакованного из архива файла. Также новое название файла, после переименования полученного, функцией rename().
+$newname_unpack = "upload_unpack/" . date("Y-m-d") . "_" . rand(0, 10000);
+$newname_unpack_name = "upload_unpack/" . date("Y-m-d") . "_" . rand(0, 10000) . ".txt";
+
+if(!empty($myfile) && $myfile_type == "text/plain") {
 
     if($myfile_type != "text/plain") {
         echo ("Выбран неверный тип файла. Можно загружать только файлы .txt");
@@ -79,9 +84,72 @@ if(!empty($myfile)) {
         }
     }
     }
+    // Формируем JSON-запись, для передачи ее в js файл.
+    echo json_encode($newname.",".$newname_compr.",".$newname_zip);
 }
+// Если передан архив на сервер
+else {
 
-// Формируем JSON-запись, для передачи ее в js файл.
-echo json_encode($newname.",".$newname_compr.",".$newname_zip);
+    // Объявляем экземпляр класса ZipArchive.
+    $zip = new ZipArchive;
+
+    //Сюда будем складывать имена файлов.
+    //$filenames = array();
+
+    // Разархивируем полученный от формы архив.
+    if ($zip->open($myfile) === true) {
+        //цикл, проходим по индексам файлов
+        /*
+        for($i=0; $i<$zip->numFiles; $i++) {
+            //с помощью метода getNameIndex получаем имя элемента по индексу
+            //и помещаем в наш массив имён ;)
+            $filenames[] = $zip->getNameIndex($i);
+            $zip->renameName($filenames[i],'info.txt');
+        }
+        */
+        // $zip->renameName(getNameIndex('1'),'info.txt');
+        $zip->extractTo($newname_unpack);
+	    $zip->close();
+    } else {
+	    echo 'Не могу найти файл архива!';
+    }
+
+    // Папка куда распаковались файлы.
+    $dir_unpack = $newname_unpack;
+
+    // Получаем список файлов в ней.
+    $f = scandir($dir_unpack);
+
+    // Находим распакованный .txt файл. Присваиваем его переменной $dir_unpack_file.
+    foreach ($f as $file){
+        if(preg_match('/\.(txt)/', $file)) {
+            $dir_unpack_file = $newname_unpack."\\".$file;
+
+            // Считываем данные из файла, в перeменную $data_zip
+            $data_zip = implode("", file($dir_unpack_file));
+
+            // Делаем компрессинг полученных данных
+            $huffman3 = new Huffman();
+            $compressed = $huffman3->compress($data_zip);
+
+            // Делаем декомпрессинг полученных данных
+            $huffman4 = new Huffman();
+            $decompressed = $huffman4->decompress($compressed);
+
+            // Записываем распакованные данные в файл $dir_unpack_file.
+            $fp = fopen($dir_unpack_file, "w");
+            fwrite($fp, $decompressed);
+            fclose($fp);
+        }
+    }
+
+    // Переносим файл $dir_unpack_file в папку upload_unpack. Чтобы скачивание по ссылке "Скачать распакованный файл", производилось по правильному пути.
+    rename($dir_unpack_file, $newname_unpack_name);
+    // После переноса файла, удаляем временную папку с первоначальными, разархивированными данными.
+    rmdir($newname_unpack);
+
+    // Формируем JSON-запись, для передачи ее в js файл.
+    echo json_encode($newname_unpack_name);
+}
 
 ?>
