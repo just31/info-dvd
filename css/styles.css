@@ -61,7 +61,7 @@
     margin-right: 2px;
 }
 
-.link {
+.link, .link_unpack {
     display: none;
 }
 
@@ -74,7 +74,7 @@
 }
 
 #download, #download_compr,
-    #download_zip {
+    #download_zip, #download_unpack {
         width: 17vw;
 }
 
