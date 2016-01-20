@@ -12,19 +12,19 @@
 <body>
     <div id="main" class="main">
 
-      <h1 class="main__title">Форма загрузки файлов</h1>
+      <h1 class="main__title">Форма загрузки файлов/zip-архивов</h1>
 
         <div class="container">
 
             <form id="upload" name="upload" action="" method="POST" enctype="multipart/form-data">
                 <!-- Form Name -->
-                <legend>Загрузить на сервер текстовый файл (.txt)</legend>
+                <legend>Загрузить на сервер текстовый файл (.txt) или zip-архив</legend>
 
                 <!-- File Button -->
                 <div class="control-group" id="control-group__add-foto">
                     <div class="controls clearfix">
                         <span class="btn btn-warning btn-file">
-                            <i class="ico-moon-plus"> </i><span>Выберите файл...</span>
+                            <i class="ico-moon-plus"> </i><span>Выберите txt-файл или zip-архив...</span>
                             <input type="file" id="files" name="files" onchange='document.getElementById("fileName").value=this.value' />
                         </span>
                     </div>
@@ -47,6 +47,10 @@
                 <p><a id="download_compr" class="btn btn-success" href="" target="blank" download="">Скачать упакованный txt-файл</a></p>
 
                 <p><a id="download_zip" class="btn btn-default" href="">Скачать zip-архив (2 файла)</a></p>
+            </div>
+
+            <div class="link_unpack link_download">
+                <p><a id="download_unpack" class="btn btn-success" href="" download="">Скачать расшифрованный файл</a></p>
             </div>
 
             <p class="update__link update__link_page">
