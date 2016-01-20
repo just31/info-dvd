@@ -1,4 +1,10 @@
-﻿// Функция определения типа данных, выбранного файла.
+﻿// Включаем строгий режим
+"use strict";
+
+// Добавляем переменную flag, для разветвления логики, по текстовому или архивному файлам.
+var flag = null;
+
+// Функция определения типа данных, выбранного файла.
 function validateType(fileInput, type) {
     var fileObj, oType;
     // Будем читать первый выбранный файл
@@ -8,11 +14,26 @@ function validateType(fileInput, type) {
         fileObj = fileInput.files[0];
     }
 
-    // Определяем тип файла. Если он не текстовый, делаем 'return false' кнопке.
+    // Через input.value переданного файла, вырезаем mime-тип файла. Необходимо для определения zip-архива.
+    var input_type = document.getElementById("files").value;
+    input_type = input_type.split(".")[1];
+
+    // Определяем тип файла. Если он не текстовый или архивный, делаем 'return false' кнопке.
     oType = fileObj.type;
-    if(fileObj.type !=='text/plain') {
+    if(fileObj.type !=='text/plain' && input_type !=='zip') {
         return false;
     }
+
+    // Если выбран текстовый файл, ставим значение флага, равное "text".
+    if(fileObj.type === 'text/plain') {
+        flag = "text";
+    }
+
+    // Если выбран zip-архив, ставим значение флага, равное "zip".
+    if(input_type === 'zip') {
+        flag = "zip";
+    }
+
     return true;
 }
 
@@ -24,12 +45,20 @@ $('#files').change(function () {
         $("#fileName").val('');
         // Выводим в модальном окне предупреждающий текст
         $(".container").append('<div id="myModalBox_senderr" class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header">' +
-        '<h5 class="modal-title">Выбран неверный тип файла. Можно загружать только файлы .txt</h5></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">' +
+        '<h5 class="modal-title">Выбран неверный тип файла. Можно загружать только файлы .txt или zip-архивы.</h5></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">' +
         'Закрыть</button></div></div></div></div>');
         $("#myModalBox_senderr").modal('show');
     } else {
-        // После выбора файла, меняем текст на кнопке.
-        add_submit.innerHTML = 'Загрузить файл';
+
+        if(flag === "text") {
+            // После выбора файла, меняем текст на кнопке.
+            add_submit.innerHTML = 'Загрузить файл';
+        }
+        if(flag === "zip") {
+            // После выбора архива, меняем текст на кнопке.
+            add_submit.innerHTML = 'Загрузить архив';
+        }
+
     }
 });
 
@@ -60,7 +89,14 @@ document.forms.upload.onsubmit = function(e) {
     }
 
     // Добавляем кнопке промежуточное состояние - "Загружаю".
-    add_submit.innerHTML = 'Загружаю, упаковываю...';
+    if(flag === "text") {
+        // После выбора файла, меняем текст на кнопке.
+        add_submit.innerHTML = 'Загружаю, упаковываю...';
+    }
+    if(flag === "zip") {
+        // После выбора zip-архива, меняем текст на кнопке.
+        add_submit.innerHTML = 'Загружаю, распаковываю...';
+    }
     // После загрузки файла на сервер, отключаем кнопку.
     add_submit.disabled = true;
 
@@ -85,7 +121,13 @@ function upload(file) {
             setTimeout(function() {
 
                 // Показываем кнопки, для скачивания файла.
-                $(".link").fadeIn(1000);
+                if(flag === "text") {
+                    $(".link").fadeIn(1000);
+                }
+                if(flag === "zip") {
+                    $(".link_unpack").fadeIn(1000);
+                }
+
                 // Показываем дополнительнуюю ссылку внизу справа под формой, с возможностью обновления страницы.
                 $(".update__link").css({'opacity' : '1'});
 
@@ -96,13 +138,20 @@ function upload(file) {
 
                 // Конвертируем строку с json-данными в javascript-объект, для вывода их в ссылках.
                 var data = jQuery.parseJSON(this.responseText),
-                link_url = data,
-                link_url_file = data.split(",")[0],
-                link_url_compr = data.split(",")[1],
-                link_url_zip = data.split(",")[2];
+                    link_url = data;
+                // В зависимости от того что было загружено на сервер: txt или zip, выбираем первый индекс массива. Для вывода значения в соотвествующей ссылке на скачивание.
+                if(flag === "text") {
+                    var link_url_file = data.split(",")[0];
+                }
+                if(flag === "zip") {
+                    var link_url_unpack = data.split(",")[0];
+                }
+                var link_url_compr = data.split(",")[1],
+                    link_url_zip = data.split(",")[2];
                 $("#download").attr("href", link_url_file);
                 $("#download_compr").attr("href", link_url_compr);
                 $("#download_zip").attr("href", link_url_zip);
+                $("#download_unpack").attr("href", link_url_unpack);
 
 		    } else {
 		        log("error " + this.status);
@@ -113,7 +162,7 @@ function upload(file) {
     xhr.upload.onprogress = function(event) {
         setTimeout(function(){
             //Делаем искусственную задержку, состояния кнопки. Выводим на ней информацию о загруженных кб.
-            add_submit.innerHTML = 'Готово! Загружено на сервер ' + event.loaded + " кб.";
+            add_submit.innerHTML = 'Готово! Загружено на сервер ' + event.total + " кб.";
         }, 1000);
     }
 
